@@ -12,6 +12,15 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: SafeArea(
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return ListTile(title: Text('l'));
+          },
+        ),
+      ),
+    );
   }
 }
