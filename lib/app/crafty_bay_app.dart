@@ -15,6 +15,7 @@ class _CraftyBayAppState extends State<CraftyBayApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.name,
       theme: AppThemeData.lightThemeData,
       onGenerateRoute: AppRoutes.getRoutes

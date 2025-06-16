@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors{
-  static Color themeColor = const Color(0x0007aeaf);
+  static Color themeColor = Color.fromRGBO(7, 174, 175,1);
 
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;
