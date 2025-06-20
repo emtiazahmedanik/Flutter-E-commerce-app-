@@ -31,7 +31,7 @@ class AppThemeData {
           ),
           backgroundColor: AppColors.themeColor,
           foregroundColor: Colors.white,
-          textStyle: TextStyle(fontSize: 18),
+          textStyle: TextStyle(fontSize: 16),
         ),
       ),
     );

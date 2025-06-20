@@ -1,3 +1,4 @@
+import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:craft_bay/features/auth/ui/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +84,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: _onTapNext,
                     child: Text('Login'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: (){
+                      Navigator.pushNamed(context, SignUpScreen.name);
+                    },
+                    child: Text('Sign Up'),
                   ),
                 ],
               ),

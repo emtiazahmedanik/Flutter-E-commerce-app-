@@ -1,5 +1,6 @@
 import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
 import 'package:craft_bay/features/auth/ui/widgets/app_logo.dart';
+import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,13 +15,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    _moveTONextScreen();
+    _moveToHomeScreen();
     super.initState();
   }
 
-  Future<void> _moveTONextScreen() async{
+  Future<void> _moveToHomeScreen() async{
     await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, LoginScreen.name);
+    Navigator.pushReplacementNamed(context, HomeScreen.name);
   }
 
   @override
