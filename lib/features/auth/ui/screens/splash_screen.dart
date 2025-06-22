@@ -1,5 +1,6 @@
 import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
 import 'package:craft_bay/features/auth/ui/widgets/app_logo.dart';
+import 'package:craft_bay/features/common/screen/main_bottom_nav_screen.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _moveToHomeScreen() async{
     await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, HomeScreen.name);
+    Navigator.pushReplacementNamed(context, MainBottomNavScreen.name);
   }
 
   @override

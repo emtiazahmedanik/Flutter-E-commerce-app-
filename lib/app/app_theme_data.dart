@@ -10,11 +10,13 @@ class AppThemeData {
       ),
       textTheme: TextTheme(
         titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+        titleMedium: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
         headlineLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           color: Colors.grey,
         ),
+        bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,color: Colors.teal),
       ),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
@@ -34,6 +36,9 @@ class AppThemeData {
           textStyle: TextStyle(fontSize: 16),
         ),
       ),
+      appBarTheme: AppBarTheme(
+        titleTextStyle: TextStyle(color: Colors.black54,fontSize: 18,fontWeight: FontWeight.w700)
+      )
     );
   }
 

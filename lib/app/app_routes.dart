@@ -1,7 +1,9 @@
 import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/splash_screen.dart';
+import 'package:craft_bay/features/common/screen/main_bottom_nav_screen.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
+import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes{
@@ -15,6 +17,10 @@ class AppRoutes{
       screenWidget = SignUpScreen();
     }else if(settings.name == HomeScreen.name){
       screenWidget = HomeScreen();
+    }else if(settings.name == ProductCategoryScreen.name){
+      screenWidget = ProductCategoryScreen();
+    }else if(settings.name == MainBottomNavScreen.name){
+      screenWidget = MainBottomNavScreen();
     }
 
     return MaterialPageRoute(builder: (context) => screenWidget);
