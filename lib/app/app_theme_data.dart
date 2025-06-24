@@ -17,6 +17,7 @@ class AppThemeData {
           color: Colors.grey,
         ),
         bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500,color: Colors.teal),
+        bodySmall: TextStyle(fontSize: 12,color: AppColors.themeColor)
       ),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),

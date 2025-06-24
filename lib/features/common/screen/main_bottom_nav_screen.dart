@@ -1,6 +1,8 @@
+import 'package:craft_bay/features/cart/ui/screen/cart_screen.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
+import 'package:craft_bay/features/wish%20list/ui/screen/wish_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,8 +22,8 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
     ProductCategoryScreen(),
-    ProductCategoryScreen(),
-    ProductCategoryScreen(),
+    CartScreen(),
+    WishListScreen(),
   ];
   
   @override

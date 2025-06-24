@@ -1,11 +1,11 @@
-
 import 'package:craft_bay/app/asset_paths.dart';
+import 'package:craft_bay/features/auth/ui/screens/verification_screen.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
+import 'package:craft_bay/features/common/ui/widget/popular_item.dart';
 import 'package:craft_bay/features/home/ui/widget/app_bar_action_button.dart';
 import 'package:craft_bay/features/home/ui/widget/home_carousel_slider.dart';
 import 'package:craft_bay/features/common/ui/widget/product_category_item.dart';
 import 'package:craft_bay/features/home/ui/widget/product_search_bar.dart';
-import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -33,9 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 ProductSearchBar(),
                 HomeCarouselSlider(),
-                buildSectionTitle(title: 'Categories', onTapSeeAll: _goToCategoryScreen),
+                buildSectionTitle(
+                  title: 'Categories',
+                  onTapSeeAll: _goToCategoryScreen,
+                ),
                 buildCategoryList(),
                 buildSectionTitle(title: 'Popular', onTapSeeAll: () {}),
+                buildPopularItem(),
                 buildSectionTitle(title: 'New', onTapSeeAll: () {}),
                 buildSectionTitle(title: 'Special', onTapSeeAll: () {}),
               ],
@@ -46,14 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _goToCategoryScreen(){
+  void _goToCategoryScreen() {
     Get.find<MainBottomNavController>().moveToCategory();
   }
+
   AppBar buildAppBar() {
     return AppBar(
       title: SvgPicture.asset(AssetPath.navAppLogoSvg),
       actions: [
-        buildNavButton(onTap: () {}, iconData: Icons.person_2_outlined),
+        buildNavButton(
+            onTap: () {
+              Navigator.pushNamed(context, VerificationScreen.name);
+            },
+            iconData: Icons.person_2_outlined
+        ),
         SizedBox(width: 8),
         buildNavButton(onTap: () {}, iconData: Icons.phone),
         SizedBox(width: 8),
@@ -86,10 +96,25 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (context, index) {
-          return ProductCategoryItem(iconData: Icons.computer,categoryName: 'Computer',);
+          return ProductCategoryItem(
+            iconData: Icons.computer,
+            categoryName: 'Computer',
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildPopularItem() {
+    return SizedBox(
+      height: 180,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return PopularItem();
         },
       ),
     );
   }
 }
-

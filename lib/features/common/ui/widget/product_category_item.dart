@@ -14,8 +14,8 @@ class ProductCategoryItem extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 80,
-            width: 80,
+            height: 60,
+            width: 60,
             decoration: BoxDecoration(
               color: Colors.teal.shade100,
               borderRadius: BorderRadius.circular(8.0),
