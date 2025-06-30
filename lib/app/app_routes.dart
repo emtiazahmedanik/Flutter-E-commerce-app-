@@ -5,6 +5,7 @@ import 'package:craft_bay/features/auth/ui/screens/verification_screen.dart';
 import 'package:craft_bay/features/common/screen/main_bottom_nav_screen.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
+import 'package:craft_bay/features/product/ui/screen/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes{
@@ -24,6 +25,8 @@ class AppRoutes{
       screenWidget = MainBottomNavScreen();
     }else if(settings.name == VerificationScreen.name){
       screenWidget = VerificationScreen();
+    }else if(settings.name == ProductDetailScreen.name){
+      screenWidget = ProductDetailScreen();
     }
 
     return MaterialPageRoute(builder: (context) => screenWidget);

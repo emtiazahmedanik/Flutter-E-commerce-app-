@@ -1,4 +1,5 @@
 import 'package:craft_bay/features/common/network/urls/asset_urls.dart';
+import 'package:craft_bay/features/common/ui/widget/build_icon_button.dart';
 import 'package:flutter/material.dart';
 
 class PopularItem extends StatelessWidget {
@@ -58,12 +59,7 @@ class PopularItem extends StatelessWidget {
                       children: [
                         Text('৳100',style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w700),),
                         Text('⭐4.8',style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.black)),
-                        Container(
-                          height: 20,
-                          width: 20,
-                          decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(2)),
-                          child: Icon(Icons.favorite_border,size: 14,color: Colors.white,),
-                        )
+                        BuildIconButton(onTap: (){}, icon: Icons.favorite_border)
                       ],
                     ),
 
