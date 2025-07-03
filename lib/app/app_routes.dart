@@ -6,6 +6,8 @@ import 'package:craft_bay/features/common/screen/main_bottom_nav_screen.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
 import 'package:craft_bay/features/product/ui/screen/product_detail_screen.dart';
+import 'package:craft_bay/features/reviews/ui/screen/create_review_screen.dart';
+import 'package:craft_bay/features/reviews/ui/screen/reviews_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes{
@@ -24,9 +26,14 @@ class AppRoutes{
     }else if(settings.name == MainBottomNavScreen.name){
       screenWidget = MainBottomNavScreen();
     }else if(settings.name == VerificationScreen.name){
-      screenWidget = VerificationScreen();
+      final String email = settings.arguments as String;
+      screenWidget = VerificationScreen(email: email,);
     }else if(settings.name == ProductDetailScreen.name){
       screenWidget = ProductDetailScreen();
+    }else if(settings.name == ReviewsScreen.name){
+      screenWidget = ReviewsScreen();
+    }else if(settings.name == CreateReviewScreen.name){
+      screenWidget = CreateReviewScreen();
     }
 
     return MaterialPageRoute(builder: (context) => screenWidget);

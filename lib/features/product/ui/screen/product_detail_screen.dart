@@ -1,4 +1,5 @@
-
+import 'package:craft_bay/constants.dart';
+import 'package:craft_bay/features/product/ui/widget/build_add_to_cart_section.dart';
 import 'package:craft_bay/features/product/ui/widget/build_review_section.dart';
 import 'package:craft_bay/features/product/ui/widget/build_title_section.dart';
 import 'package:craft_bay/features/product/ui/widget/color_picker.dart';
@@ -21,54 +22,69 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Product Details'),
+        leading: IconButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_rounded)
+        ),
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
-          child: SingleChildScrollView(
-            child: Column(
-              spacing: 8,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProductSlider(),
-                BuildTitleSection(),
-                BuildReviewsSection(),
-                const SizedBox(height: 1),
-                Text(
-                  'Color',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium!.copyWith(color: Colors.black54),
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 2.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    spacing: 8,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ProductSlider(),
+                      BuildTitleSection(),
+                      BuildReviewsSection(),
+                      const SizedBox(height: 1),
+                      Text(
+                        'Color',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium!.copyWith(color: Colors.black54),
+                      ),
+                      ColorPicker(
+                        colors: ['Blue', 'Black', 'White', 'Grey'],
+                        onSelected: (String value) {},
+                      ),
+                      Text(
+                        'Size',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium!.copyWith(color: Colors.black54),
+                      ),
+                      SizePicker(
+                        sizes: ['X', 'XL', '2L', 'L'],
+                        onSelected: (String value) {},
+                      ),
+                      const SizedBox(height: 2.0),
+                      Text(
+                        'Description',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium!.copyWith(color: Colors.black54),
+                      ),
+                      Text(
+                        Constants.lorem,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 20,)
+                    ],
+                  ),
                 ),
-                ColorPicker(
-                  colors: ['Blue', 'Black', 'White', 'Grey'],
-                  onSelected: (String value) {},
-                ),
-                Text(
-                  'Size',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium!.copyWith(color: Colors.black54),
-                ),
-                SizePicker(
-                  sizes: ['X', 'XL', '2L', 'L'],
-                  onSelected: (String value) {},
-                ),
-                const SizedBox(height: 2.0),
-                Text(
-                  'Description',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium!.copyWith(color: Colors.black54),
-                ),
-                Text(
-                  '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.''',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(height: 20,)
-              ],
+              ),
             ),
-          ),
+            BuildAddToCartSection(onTap: (){}),
+          ],
         ),
       ),
     );

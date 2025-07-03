@@ -10,6 +10,8 @@ class VerificationTimerController extends GetxController {
   get isTimeEnd => _timerEnd;
 
   Future<void> wait() async {
+    _time = 120;
+    _timerEnd = false;
     _timer = Timer.periodic(Duration(seconds: 1), (timer)
     {
       update();
@@ -20,6 +22,7 @@ class VerificationTimerController extends GetxController {
         _timerEnd = true;
         _timer.cancel();
       }
+      update();
     });
   }
 }

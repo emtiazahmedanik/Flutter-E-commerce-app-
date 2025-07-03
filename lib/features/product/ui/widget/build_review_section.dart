@@ -1,4 +1,5 @@
 import 'package:craft_bay/features/common/ui/widget/build_icon_button.dart';
+import 'package:craft_bay/features/reviews/ui/screen/reviews_screen.dart';
 import 'package:flutter/material.dart';
 
 class BuildReviewsSection extends StatelessWidget {
@@ -22,7 +23,9 @@ class BuildReviewsSection extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, ReviewsScreen.name);
+          },
           child: Text(
             'Reviews',
             style: Theme.of(

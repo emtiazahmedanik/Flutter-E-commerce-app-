@@ -1,4 +1,5 @@
 import 'package:craft_bay/app/asset_paths.dart';
+import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/verification_screen.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/ui/widget/popular_item.dart';
@@ -58,16 +59,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       title: SvgPicture.asset(AssetPath.navAppLogoSvg),
       actions: [
-        buildNavButton(
+        BuildNavActionButton(
             onTap: () {
-              Navigator.pushNamed(context, VerificationScreen.name);
+
             },
             iconData: Icons.person_2_outlined
         ),
         SizedBox(width: 8),
-        buildNavButton(onTap: () {}, iconData: Icons.phone),
+        BuildNavActionButton(
+            onTap: () {
+              Navigator.pushNamed(context, SignUpScreen.name);
+            },
+            iconData: Icons.phone),
         SizedBox(width: 8),
-        buildNavButton(
+        BuildNavActionButton(
           onTap: () {},
           iconData: Icons.notifications_active_outlined,
         ),

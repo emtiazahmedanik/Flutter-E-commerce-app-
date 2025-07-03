@@ -1,16 +1,20 @@
 import 'dart:async';
-
 import 'package:craft_bay/app/asset_paths.dart';
+import 'package:craft_bay/core/services/network/network_client.dart';
+import 'package:craft_bay/features/auth/data/model/verification_request_model.dart';
 import 'package:craft_bay/features/auth/ui/controller/verificatin_timer_controller.dart';
+import 'package:craft_bay/features/auth/ui/controller/verification_controller.dart';
+import 'package:craft_bay/features/auth/ui/widgets/show_snackbar.dart';
+import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({super.key});
+  const VerificationScreen({super.key, required this.email});
   static final String name = '/verification-screen';
+  final String email;
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
 }
@@ -19,16 +23,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final _pinVerificationController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  final _vrificationTimeController = Get.find<VerificationTimerController>();
+  final _verificationTimeController = Get.find<VerificationTimerController>();
+  final _verificationController = Get.find<VerificationController>();
 
   @override
   void dispose() {
-    _pinVerificationController.dispose();
     super.dispose();
   }
   @override
   void initState() {
-    _vrificationTimeController.wait();
+    _verificationTimeController.wait();
     super.initState();
   }
 
@@ -52,13 +56,20 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
                 Text('A 4 digit OTP code has been sent'),
                 buildPinCodeTextField(),
-                ElevatedButton(
-                    onPressed: (){
-                      if(_formKey.currentState!.validate()){
-
-                      }
-                    },
-                    child: Text('Next')
+                GetBuilder<VerificationController>(
+                  builder: (context) {
+                    return Visibility(
+                      visible: !_verificationController.inProgress,
+                      replacement: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const CircularProgressIndicator(),
+                      ),
+                      child: ElevatedButton(
+                          onPressed: _onTapNext,
+                          child: Text('Next')
+                      ),
+                    );
+                  }
                 ),
                 const SizedBox(height: 20,),
                 GetBuilder<VerificationTimerController>(
@@ -67,7 +78,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       TextSpan(
                         children: [
                           TextSpan(text: 'Code will expire in',style: TextStyle(color: Colors.black54)),
-                          TextSpan(text: ' ${_vrificationTimeController.getTime} s'),
+                          TextSpan(text: ' ${_verificationTimeController.getTime} s'),
                         ]
                       )
                     );
@@ -76,10 +87,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 GetBuilder<VerificationTimerController>(
                   builder: (context) {
                     return Visibility(
-                      visible: _vrificationTimeController.isTimeEnd,
+                      visible: _verificationTimeController.isTimeEnd,
                         child: TextButton(
                             onPressed: (){
-                              _vrificationTimeController.wait();
+                              _resendOTP();
+                              _verificationTimeController.wait();
                             },
                             child: Text('Resend Code')
                         )
@@ -96,6 +108,27 @@ class _VerificationScreenState extends State<VerificationScreen> {
     );
   }
 
+  Future<void> _resendOTP() async{
+    final bool isSuccess = await _verificationController.resendOTP(email: widget.email);
+    if(isSuccess){
+      showSnackBar(context: context, message: _verificationController.message);
+    }else{
+      showSnackBar(context: context, message: _verificationController.message);
+    }
+  }
+  Future<void> _onTapNext() async{
+    if(_formKey.currentState!.validate()){
+      final String pin = _pinVerificationController.text;
+      VerificationRequestModel model = VerificationRequestModel(email: widget.email, OTP: pin);
+      final bool isSuccess = await _verificationController.verifyOTP(model);
+      if(isSuccess){
+        Navigator.pushNamedAndRemoveUntil(context, HomeScreen.name, (predicate)=>false);
+        showSnackBar(context: context, message: _verificationController.message);
+      }else{
+        showSnackBar(context: context, message: _verificationController.message,isError: true);
+      }
+    }
+  }
   Widget buildPinCodeTextField() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36),

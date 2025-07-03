@@ -1,3 +1,4 @@
+import 'package:craft_bay/constants.dart';
 import 'package:craft_bay/features/common/network/urls/asset_urls.dart';
 import 'package:craft_bay/features/common/ui/widget/build_icon_button.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class PopularItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                       children: [
-                        Text('৳100',style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w700),),
+                        Text('${Constants.takaSign}100',style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w700),),
                         Text('⭐4.8',style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.black)),
                         BuildIconButton(onTap: (){}, icon: Icons.favorite_border)
                       ],

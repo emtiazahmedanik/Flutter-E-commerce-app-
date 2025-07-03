@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class buildNavButton extends StatelessWidget {
-  const buildNavButton({
+class BuildNavActionButton extends StatelessWidget {
+  const BuildNavActionButton({
     super.key,
     required this.onTap,
     required this.iconData,
