@@ -1,5 +1,6 @@
 import 'package:craft_bay/features/cart/ui/screen/cart_screen.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
+import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
 import 'package:craft_bay/features/wish%20list/ui/screen/wish_list_screen.dart';
@@ -25,6 +26,12 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
     CartScreen(),
     WishListScreen(),
   ];
+
+  @override
+  void initState() {
+    Get.find<HomeSliderController>().getSlides();
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {

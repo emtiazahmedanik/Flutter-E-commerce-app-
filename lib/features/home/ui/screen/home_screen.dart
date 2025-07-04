@@ -1,8 +1,8 @@
 import 'package:craft_bay/app/asset_paths.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
-import 'package:craft_bay/features/auth/ui/screens/verification_screen.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/ui/widget/popular_item.dart';
+import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
 import 'package:craft_bay/features/home/ui/widget/app_bar_action_button.dart';
 import 'package:craft_bay/features/home/ui/widget/home_carousel_slider.dart';
 import 'package:craft_bay/features/common/ui/widget/product_category_item.dart';
@@ -21,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,17 @@ class _HomeScreenState extends State<HomeScreen> {
               spacing: 10,
               children: [
                 ProductSearchBar(),
-                HomeCarouselSlider(),
+                GetBuilder<HomeSliderController>(
+                  builder: (slider) {
+                    if(slider.inProgress){
+                      return SizedBox(
+                          height: 140,
+                          child: Center(child: const CircularProgressIndicator())
+                      );
+                    }
+                    return HomeCarouselSlider();
+                  }
+                ),
                 buildSectionTitle(
                   title: 'Categories',
                   onTapSeeAll: _goToCategoryScreen,
