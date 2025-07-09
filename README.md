@@ -1,6 +1,8 @@
 # craft_bay
 
 A modern and responsive e-commerce mobile application built with Flutter and powered by Firebase. This app provides a seamless shopping experience, real-time crash reporting, and secure authentication, wrapped in a beautiful and intuitive UI.
+<br/>
+Project is running not fully completed.
 <br/><br/>
 📱 Features
 - 🔐 User Authentication with OTP
