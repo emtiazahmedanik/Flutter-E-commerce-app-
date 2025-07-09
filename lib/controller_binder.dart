@@ -4,6 +4,7 @@ import 'package:craft_bay/features/auth/ui/controller/verificatin_timer_controll
 import 'package:craft_bay/features/auth/ui/controller/verification_controller.dart';
 import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
 import 'package:craft_bay/features/common/controller/auth_controller.dart';
+import 'package:craft_bay/features/common/controller/category_list_controller.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class ControllerBinder extends Bindings {
     Get.put(VerificationController());
     Get.put(AuthController());
     Get.put(HomeSliderController());
+    Get.put(CategoryListController());
     Get.put(
       NetworkClient(
         commonHeaders: _commonHeaders(),

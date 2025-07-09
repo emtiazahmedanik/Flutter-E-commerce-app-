@@ -1,5 +1,6 @@
 import 'package:craft_bay/app/asset_paths.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
+import 'package:craft_bay/features/common/controller/category_list_controller.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/ui/widget/popular_item.dart';
 import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
@@ -108,15 +109,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildCategoryList() {
     return SizedBox(
       height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return ProductCategoryItem(
-            iconData: Icons.computer,
-            categoryName: 'Computer',
+      child: GetBuilder<CategoryListController>(
+        builder: (controller) {
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.homeCategoryListItemLength,
+            itemBuilder: (context, index) {
+              return ProductCategoryItem(categoryModel: controller.getProductCategoryList[index],);
+            },
           );
-        },
+        }
       ),
     );
   }
