@@ -3,8 +3,8 @@ import 'package:craft_bay/app/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ProductSlider extends StatefulWidget {
-  const ProductSlider({super.key});
-
+  const ProductSlider({super.key,required this.photoUrls});
+  final List<String> photoUrls;
   @override
   State<ProductSlider> createState() => _ProductSliderState();
 }
@@ -18,7 +18,7 @@ class _ProductSliderState extends State<ProductSlider> {
       children: [
         CarouselSlider(
           items:
-          [1, 2, 3, 4, 5].map((i) {
+          widget.photoUrls.map((url) {
             return Container(
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.symmetric(horizontal: 2.0),
@@ -26,7 +26,15 @@ class _ProductSliderState extends State<ProductSlider> {
                 color: Colors.amber,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: Text('text $i', style: TextStyle(fontSize: 16.0)),
+              child:widget.photoUrls.isNotEmpty
+              ?Image.network(
+                url,
+                fit: BoxFit.cover,
+                errorBuilder: (context,error,stackTrace){
+                  return Icon(Icons.error);
+                },
+              )
+              : Icon(Icons.error),
             );
           }).toList(),
           options: CarouselOptions(
@@ -45,7 +53,7 @@ class _ProductSliderState extends State<ProductSlider> {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < widget.photoUrls.length; i++)
                   Padding(
                     padding: const EdgeInsets.only(right: 4.0),
                     child: Container(

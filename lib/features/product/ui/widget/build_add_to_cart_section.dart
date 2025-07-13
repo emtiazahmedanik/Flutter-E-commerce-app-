@@ -1,9 +1,12 @@
 import 'package:craft_bay/constants.dart';
+import 'package:craft_bay/features/product/controller/product_quantity_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BuildAddToCartSection extends StatelessWidget {
-  const BuildAddToCartSection({super.key, required this.onTap});
+  const BuildAddToCartSection({super.key, required this.onTap,required this.price});
   final VoidCallback onTap;
+  final int price;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +35,15 @@ class BuildAddToCartSection extends StatelessWidget {
                       context,
                     ).textTheme.bodyMedium!.copyWith(color: Colors.black54),
                   ),
-                  Text(
-                    '${Constants.takaSign}100000',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyLarge!.copyWith(color: Colors.teal),
+                  GetBuilder<ProductQuantityController>(
+                    builder: (controller) {
+                      return Text(
+                        '${Constants.takaSign}${controller.getQuantity * price}',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyLarge!.copyWith(color: Colors.teal),
+                      );
+                    }
                   ),
                 ],
               ),

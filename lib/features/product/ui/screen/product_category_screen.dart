@@ -51,7 +51,6 @@ class _ProductCategoryScreenState extends State<ProductCategoryScreen> {
                 Expanded(
                   child: GetBuilder<CategoryListController>(
                     builder: (controller) {
-                      print(controller.getProductCategoryList.length);
                       return Visibility(
                         visible: !controller.initialLoadingProgress,
                         replacement: const Center(child: CircularProgressIndicator(),),

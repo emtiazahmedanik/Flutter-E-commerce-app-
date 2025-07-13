@@ -1,20 +1,23 @@
+import 'package:craft_bay/features/auth/ui/controller/login_controller.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
+import 'package:craft_bay/features/auth/ui/widgets/show_snackbar.dart';
+import 'package:craft_bay/features/common/screen/main_bottom_nav_screen.dart';
+import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:craft_bay/features/auth/ui/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   static final String name = '/login';
 
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -41,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Text(
                     'Please Enter Your Email & Password',
-                    style: Theme.of(context).textTheme.headlineLarge
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -49,26 +52,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(hintText: 'Email address'),
-                    validator: (String? value){
+                    validator: (String? value) {
                       String emailValue = value ?? '';
-                      if(EmailValidator.validate(emailValue)==false){
+                      if (EmailValidator.validate(emailValue) == false) {
                         return 'Enter a valid email';
                       }
                       return null;
                     },
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(height: 10),
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(hintText: 'Password'),
-                    validator: (String? value){
-                      RegExp regex =
-                      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-                      if (value==null || value.isEmpty) {
+                    validator: (String? value) {
+                      RegExp regex = RegExp(
+                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
+                      );
+                      if (value == null || value.isEmpty) {
                         return 'Please enter password';
                       } else {
-                        if(value.length<8){
+                        if (value.length < 8) {
                           return 'At least 8 character';
                         }
                         if (!regex.hasMatch(value)) {
@@ -77,17 +81,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           return null;
                         }
                       }
-            
                     },
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _onTapNext,
-                    child: Text('Login'),
-                  ),
+                  ElevatedButton(onPressed: _onTapNext, child: Text('Login')),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pushNamed(context, SignUpScreen.name);
                     },
                     child: Text('Sign Up'),
@@ -101,11 +101,26 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _onTapNext() async{
-    if(_formKey.currentState!.validate()){
-
+  Future<void> _onTapNext() async {
+    if (_formKey.currentState!.validate()) {
+      final String _email = _emailController.text.trim();
+      final String _password = _passwordController.text.trim();
+      final bool isSuccess = await Get.find<LoginController>().logIn(
+        email: _email,
+        password: _password,
+      );
+      if (isSuccess) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          MainBottomNavScreen.name,
+          (predicate) => false,
+        );
+      } else {
+        showSnackBar(
+          context: context,
+          message: Get.find<LoginController>().getMessage,
+        );
+      }
     }
   }
-
-
 }

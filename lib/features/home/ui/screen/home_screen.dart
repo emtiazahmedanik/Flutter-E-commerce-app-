@@ -2,6 +2,7 @@ import 'package:craft_bay/app/asset_paths.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
 import 'package:craft_bay/features/common/controller/category_list_controller.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
+import 'package:craft_bay/features/common/controller/popular_product_controller.dart';
 import 'package:craft_bay/features/common/ui/widget/popular_item.dart';
 import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
 import 'package:craft_bay/features/home/ui/widget/app_bar_action_button.dart';
@@ -73,14 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         BuildNavActionButton(
             onTap: () {
-
+              Navigator.pushNamed(context, SignUpScreen.name);
             },
             iconData: Icons.person_2_outlined
         ),
         SizedBox(width: 8),
         BuildNavActionButton(
             onTap: () {
-              Navigator.pushNamed(context, SignUpScreen.name);
+
             },
             iconData: Icons.phone),
         SizedBox(width: 8),
@@ -125,13 +126,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildPopularItem() {
     return SizedBox(
-      height: 180,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return PopularItem();
-        },
+      child: GetBuilder<PopularProductController>(
+        builder: (controller) {
+          if(controller.getPopularProductList.isEmpty){
+            return Text('No Products');
+          }
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.getPopularProductList.length,
+            itemBuilder: (context, index) {
+              return PopularItem(productModel: controller.getPopularProductList[index],);
+            },
+          );
+        }
       ),
     );
   }

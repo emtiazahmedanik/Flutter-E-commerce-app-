@@ -1,9 +1,11 @@
 import 'package:craft_bay/features/auth/data/model/sign_up_request_model.dart';
 import 'package:craft_bay/features/auth/ui/controller/sign_up_controller.dart';
+import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/verification_screen.dart';
 import 'package:craft_bay/features/auth/ui/widgets/show_snackbar.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:craft_bay/features/auth/ui/widgets/app_logo.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -186,6 +188,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                   const SizedBox(height: 20),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: 'Already have an account ? '),
+                        TextSpan(
+                          text: 'LogIn',
+                          style: TextStyle(color: Colors.teal),
+                          recognizer:
+                              TapGestureRecognizer()..onTap = _onTapLogin,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -222,6 +237,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       }
     }
+  }
+
+  void _onTapLogin() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      LoginScreen.name,
+      (predicate) => false,
+    );
   }
 
   @override

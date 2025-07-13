@@ -14,7 +14,7 @@ class WishListScreen extends StatefulWidget {
 class _WishListScreenState extends State<WishListScreen> {
 
   void _moveToProductDetailScreen(){
-    Navigator.pushNamed(context, ProductDetailScreen.name);
+    //Navigator.pushNamed(context, ProductDetailScreen.name);
   }
 
   @override
@@ -47,7 +47,7 @@ class _WishListScreenState extends State<WishListScreen> {
                     onTap: (){
                       _moveToProductDetailScreen();
                     },
-                      child: PopularItem()
+                      // child: PopularItem()
                   )
               );
             },

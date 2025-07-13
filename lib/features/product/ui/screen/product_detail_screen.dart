@@ -1,4 +1,5 @@
-import 'package:craft_bay/constants.dart';
+import 'package:craft_bay/features/product/controller/product_detail_controller.dart';
+import 'package:craft_bay/features/product/controller/product_quantity_controller.dart';
 import 'package:craft_bay/features/product/ui/widget/build_add_to_cart_section.dart';
 import 'package:craft_bay/features/product/ui/widget/build_review_section.dart';
 import 'package:craft_bay/features/product/ui/widget/build_title_section.dart';
@@ -6,89 +7,127 @@ import 'package:craft_bay/features/product/ui/widget/color_picker.dart';
 import 'package:craft_bay/features/product/ui/widget/product_slider.dart';
 import 'package:craft_bay/features/product/ui/widget/size_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  const ProductDetailScreen({super.key, required this.productId});
 
   static final String name = '/product-detail-screen';
+  final String productId;
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  final ValueNotifier<int> currentSlider = ValueNotifier<int>(0);
+  final ProductDetailController _productDetailController =
+      Get.find<ProductDetailController>();
+
+  @override
+  void initState() {
+    _productDetailController.getProductDetails(productId: widget.productId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProductQuantityController());
     return Scaffold(
       appBar: AppBar(
         title: Text('Product Details'),
         leading: IconButton(
-            onPressed: (){
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios_rounded)
+          onPressed: () {
+            Navigator.pop(context);
+            Get.delete<ProductQuantityController>();
+          },
+          icon: Icon(Icons.arrow_back_ios_rounded),
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 2.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    spacing: 8,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProductSlider(),
-                      BuildTitleSection(),
-                      BuildReviewsSection(),
-                      const SizedBox(height: 1),
-                      Text(
-                        'Color',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleMedium!.copyWith(color: Colors.black54),
+        child: GetBuilder<ProductDetailController>(
+          builder: (_) {
+            if (_productDetailController.getInProgress) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 2.0,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        spacing: 8,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _productDetailController.productDetailModel.photoUrls
+                              .isEmpty
+                              ? Center(
+                              child: SizedBox(
+                                  height: 150,
+                                  child: Icon(Icons.error_sharp)
+                              )
+                          )
+                              : ProductSlider(
+                                photoUrls: _productDetailController.productDetailModel.photoUrls,
+                              ),
+                          BuildTitleSection(),
+                          BuildReviewsSection(),
+                          const SizedBox(height: 1),
+                          Text(
+                            'Color',
+                            style: Theme.of(context).textTheme.titleMedium!
+                                .copyWith(color: Colors.black54),
+                          ),
+                          ColorPicker(
+                            colors: _productDetailController.productDetailModel.colors,
+                            onSelected: (String value) {},
+                          ),
+                          Text(
+                            'Size',
+                            style: Theme.of(context).textTheme.titleMedium!
+                                .copyWith(color: Colors.black54),
+                          ),
+                          SizePicker(
+                            sizes:
+                                _productDetailController
+                                    .productDetailModel
+                                    .size,
+                            onSelected: (String value) {},
+                          ),
+                          const SizedBox(height: 2.0),
+                          Text(
+                            'Description',
+                            style: Theme.of(context).textTheme.titleMedium!
+                                .copyWith(color: Colors.black54),
+                          ),
+                          Text(
+                            _productDetailController
+                                .productDetailModel
+                                .description,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
                       ),
-                      ColorPicker(
-                        colors: ['Blue', 'Black', 'White', 'Grey'],
-                        onSelected: (String value) {},
-                      ),
-                      Text(
-                        'Size',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleMedium!.copyWith(color: Colors.black54),
-                      ),
-                      SizePicker(
-                        sizes: ['X', 'XL', '2L', 'L'],
-                        onSelected: (String value) {},
-                      ),
-                      const SizedBox(height: 2.0),
-                      Text(
-                        'Description',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleMedium!.copyWith(color: Colors.black54),
-                      ),
-                      Text(
-                        Constants.lorem,
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      const SizedBox(height: 20,)
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            BuildAddToCartSection(onTap: (){}),
-          ],
+                GetBuilder<ProductDetailController>(
+                  builder: (controller) {
+                    return BuildAddToCartSection(
+                      onTap: () {},
+                      price: controller.productDetailModel.currentPrice,
+                    );
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 }
-
-

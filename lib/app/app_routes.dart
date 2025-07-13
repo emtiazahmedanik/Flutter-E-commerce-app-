@@ -2,6 +2,7 @@ import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/splash_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/verification_screen.dart';
+import 'package:craft_bay/features/common/model/category_model.dart';
 import 'package:craft_bay/features/common/screen/main_bottom_nav_screen.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
@@ -30,13 +31,14 @@ class AppRoutes{
       final String email = settings.arguments as String;
       screenWidget = VerificationScreen(email: email,);
     }else if(settings.name == ProductDetailScreen.name){
-      screenWidget = ProductDetailScreen();
+      final String productId = settings.arguments as String;
+      screenWidget = ProductDetailScreen(productId: productId,);
     }else if(settings.name == ReviewsScreen.name){
       screenWidget = ReviewsScreen();
     }else if(settings.name == CreateReviewScreen.name){
       screenWidget = CreateReviewScreen();
     }else if(settings.name == SingleCategoryProductListScreen.name){
-      final Map<String,dynamic> args = settings.arguments as Map<String,dynamic>;
+      final CategoryModel args = settings.arguments as CategoryModel;
       screenWidget = SingleCategoryProductListScreen(args: args,);
     }
 

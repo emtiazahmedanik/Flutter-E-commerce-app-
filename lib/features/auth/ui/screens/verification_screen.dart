@@ -5,6 +5,7 @@ import 'package:craft_bay/features/auth/data/model/verification_request_model.da
 import 'package:craft_bay/features/auth/ui/controller/verificatin_timer_controller.dart';
 import 'package:craft_bay/features/auth/ui/controller/verification_controller.dart';
 import 'package:craft_bay/features/auth/ui/widgets/show_snackbar.dart';
+import 'package:craft_bay/features/common/screen/main_bottom_nav_screen.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -122,7 +123,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       VerificationRequestModel model = VerificationRequestModel(email: widget.email, OTP: pin);
       final bool isSuccess = await _verificationController.verifyOTP(model);
       if(isSuccess){
-        Navigator.pushNamedAndRemoveUntil(context, HomeScreen.name, (predicate)=>false);
+        Navigator.pushNamedAndRemoveUntil(context, MainBottomNavScreen.name, (predicate)=>false);
         showSnackBar(context: context, message: _verificationController.message);
       }else{
         showSnackBar(context: context, message: _verificationController.message,isError: true);

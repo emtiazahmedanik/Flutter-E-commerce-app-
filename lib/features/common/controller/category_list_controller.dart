@@ -54,7 +54,6 @@ class CategoryListController extends GetxController {
         list.add(CategoryModel.fromJson(categories));
       }
       _productCategoryList.addAll(list);
-      print(_productCategoryList.length);
       _message = response.responseData!['msg'];
     } else {
       _message = response.errorMessage!;

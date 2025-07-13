@@ -1,6 +1,7 @@
 import 'package:craft_bay/features/cart/ui/screen/cart_screen.dart';
 import 'package:craft_bay/features/common/controller/category_list_controller.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
+import 'package:craft_bay/features/common/controller/popular_product_controller.dart';
 import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
 import 'package:craft_bay/features/home/ui/screen/home_screen.dart';
 import 'package:craft_bay/features/product/ui/screen/product_category_screen.dart';
@@ -32,6 +33,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
   void initState() {
     Get.find<HomeSliderController>().getSlides();
     Get.find<CategoryListController>().getProducts();
+    Get.find<PopularProductController>().getPopularProducts();
     super.initState();
   }
   

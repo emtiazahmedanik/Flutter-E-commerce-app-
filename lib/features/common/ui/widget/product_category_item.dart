@@ -14,10 +14,7 @@ class ProductCategoryItem extends StatelessWidget {
         Navigator.pushNamed(
           context,
           SingleCategoryProductListScreen.name,
-          arguments: {
-            'title': categoryModel.title,
-            'id': categoryModel.id,
-          },
+          arguments: categoryModel
         );
       },
       child: Padding(
