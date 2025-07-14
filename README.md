@@ -1,12 +1,10 @@
 # craft_bay
 
-<<<<<<< HEAD
-A modern and responsive e-commerce mobile application built with Flutter and powered by Firebase and REST APIs provided by Ostad. This app provides a seamless shopping experience, real-time crash reporting, and secure authentication, wrapped in a beautiful and intuitive UI.
-=======
+
 A modern and responsive e-commerce mobile application built with Flutter and powered by Firebase. This app provides a seamless shopping experience, real-time crash reporting, and secure authentication, wrapped in a beautiful and intuitive UI.
 <br/>
 Project is running not fully completed.
->>>>>>> 9d10126dd3701c99f007778f7c00656549059738
+
 <br/><br/>
 📱 Features
 - 🔐 User Authentication with OTP

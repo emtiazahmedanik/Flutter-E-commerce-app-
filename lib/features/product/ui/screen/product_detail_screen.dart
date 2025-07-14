@@ -1,3 +1,7 @@
+import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
+import 'package:craft_bay/features/auth/ui/widgets/show_snackbar.dart';
+import 'package:craft_bay/features/common/controller/auth_controller.dart';
+import 'package:craft_bay/features/product/controller/product_add_to_cart_controller.dart';
 import 'package:craft_bay/features/product/controller/product_detail_controller.dart';
 import 'package:craft_bay/features/product/controller/product_quantity_controller.dart';
 import 'package:craft_bay/features/product/ui/widget/build_add_to_cart_section.dart';
@@ -62,16 +66,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         spacing: 8,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _productDetailController.productDetailModel.photoUrls
-                              .isEmpty
+                          _productDetailController
+                                  .productDetailModel
+                                  .photoUrls
+                                  .isEmpty
                               ? Center(
-                              child: SizedBox(
+                                child: SizedBox(
                                   height: 150,
-                                  child: Icon(Icons.error_sharp)
+                                  child: Icon(Icons.error_sharp),
+                                ),
                               )
-                          )
                               : ProductSlider(
-                                photoUrls: _productDetailController.productDetailModel.photoUrls,
+                                photoUrls:
+                                    _productDetailController
+                                        .productDetailModel
+                                        .photoUrls,
                               ),
                           BuildTitleSection(),
                           BuildReviewsSection(),
@@ -82,7 +91,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 .copyWith(color: Colors.black54),
                           ),
                           ColorPicker(
-                            colors: _productDetailController.productDetailModel.colors,
+                            colors:
+                                _productDetailController
+                                    .productDetailModel
+                                    .colors,
                             onSelected: (String value) {},
                           ),
                           Text(
@@ -118,7 +130,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 GetBuilder<ProductDetailController>(
                   builder: (controller) {
                     return BuildAddToCartSection(
-                      onTap: () {},
+                      onTap: _onTapAddToCart,
                       price: controller.productDetailModel.currentPrice,
                     );
                   },
@@ -129,5 +141,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _onTapAddToCart() async {
+    if (await Get.find<AuthController>().isUserLoggedIn()) {
+      debugPrint('logged in');
+      final bool isSuccess = await Get.find<ProductAddToCartController>()
+          .addToCartRequest(productId: widget.productId);
+      if(isSuccess){
+        showSnackBar(context: context, message: Get.find<ProductAddToCartController>().getMessage);
+      }else{
+        showSnackBar(context: context, message: Get.find<ProductAddToCartController>().getMessage,isError: true);
+      }
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        LoginScreen.name,
+        (predicate) => false,
+      );
+      showSnackBar(context: context, message: 'Please login first');
+    }
   }
 }

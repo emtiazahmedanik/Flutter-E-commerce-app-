@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
-import 'package:http/http.dart';
+import 'package:craft_bay/features/common/controller/auth_controller.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 part 'network_response.dart';
@@ -9,17 +11,22 @@ class NetworkClient {
   final String _defaultErrorMsg = 'Something went wrong';
 
   final VoidCallback onUnAuthorize;
-  final Map<String, String> commonHeaders;
 
   final Logger _logger = Logger();
 
-  NetworkClient({required this.commonHeaders, required this.onUnAuthorize});
+  NetworkClient({ required this.onUnAuthorize});
 
   Future<NetworkResponse> getRequest({required String url}) async {
+    Map<String, String> commonHeaders={
+        'content-type': 'application/json',
+        'token': Get
+            .find<AuthController>()
+            .accessToken ?? '',
+      };
     try {
       Uri uri = Uri.parse(url);
       _logRequest(url: url, headers: commonHeaders);
-      final Response response = await get(uri,headers: commonHeaders);
+      final http.Response response = await http.get(uri,headers: commonHeaders);
       _logResponse(response: response);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
@@ -52,10 +59,16 @@ class NetworkClient {
     }
   }
   Future<NetworkResponse> postRequest({required String url,required Map<String,dynamic>? body}) async {
+    Map<String, String> commonHeaders={
+      'content-type': 'application/json',
+      'token': Get
+          .find<AuthController>()
+          .accessToken ?? '',
+    };
     try {
       Uri uri = Uri.parse(url);
       _logRequest(url: url, headers: commonHeaders);
-      final Response response = await post(uri,headers: commonHeaders,body: jsonEncode(body,));
+      final http.Response response = await http.post(uri,headers: commonHeaders,body: jsonEncode(body,));
       _logResponse(response: response);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
@@ -88,10 +101,16 @@ class NetworkClient {
     }
   }
   Future<NetworkResponse> deleteRequest(String url) async {
+    Map<String, String> commonHeaders={
+      'content-type': 'application/json',
+      'token': Get
+          .find<AuthController>()
+          .accessToken ?? '',
+    };
     try {
       Uri uri = Uri.parse(url);
       _logRequest(url: url, headers: commonHeaders);
-      final Response response = await delete(uri,headers: commonHeaders);
+      final http.Response response = await http.delete(uri,headers: commonHeaders);
       _logResponse(response: response);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseBody = jsonDecode(response.body);
@@ -137,7 +156,7 @@ class NetworkClient {
     _logger.i(message);
   }
 
-  void _logResponse({required Response response}) {
+  void _logResponse({required http.Response response}) {
     final String message = '''
     URL -> ${response.request?.url}
     HEADERS -> ${response.request?.headers}

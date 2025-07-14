@@ -19,8 +19,10 @@ class PopularProductController extends GetxController{
     if(response.isSuccess){
       isSuccess = true;
       msg = response.responseData!['msg'];
-      for(Map<String,dynamic> product in response.responseData!['results']){
-        _productList.add(ProductModel.fromJson(product));
+      if(response.responseData!['results'] != null){
+        for(Map<String,dynamic> product in response.responseData!['results']){
+          _productList.add(ProductModel.fromJson(product));
+        }
       }
     }else{
       msg = response.responseData!['msg'];

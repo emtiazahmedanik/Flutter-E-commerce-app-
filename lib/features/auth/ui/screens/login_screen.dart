@@ -66,21 +66,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: true,
                     decoration: InputDecoration(hintText: 'Password'),
                     validator: (String? value) {
-                      RegExp regex = RegExp(
-                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
-                      );
                       if (value == null || value.isEmpty) {
                         return 'Please enter password';
-                      } else {
-                        if (value.length < 8) {
-                          return 'At least 8 character';
-                        }
-                        if (!regex.hasMatch(value)) {
-                          return "Must contain at least one\nlowercase,uppercase,special,digit";
-                        } else {
-                          return null;
-                        }
                       }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 20),
@@ -119,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
         showSnackBar(
           context: context,
           message: Get.find<LoginController>().getMessage,
+          isError: true
         );
       }
     }

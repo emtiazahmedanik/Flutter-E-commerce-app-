@@ -65,22 +65,25 @@ class _SingleCategoryProductListScreenState
             return Column(
               children: [
                 Expanded(
-                  child: GridView.builder(
-                    itemCount: _productListController.getProductList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      //childAspectRatio: 4/5
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 0),
+                    child: GridView.builder(
+                      itemCount: _productListController.getProductList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        //childAspectRatio: 4/5
+                      ),
+                      itemBuilder: (context, index) {
+                        return FittedBox(
+                          child: InkWell(
+                            onTap: () {
+                              _moveToProductDetailScreen(productId: _productListController.getProductList[index].id);
+                            },
+                            child: PopularItem(productModel: _productListController.getProductList[index],),
+                          ),
+                        );
+                      },
                     ),
-                    itemBuilder: (context, index) {
-                      return FittedBox(
-                        child: InkWell(
-                          onTap: () {
-                            _moveToProductDetailScreen(productId: _productListController.getProductList[index].id);
-                          },
-                          child: PopularItem(productModel: _productListController.getProductList[index],),
-                        ),
-                      );
-                    },
                   ),
                 ),
                 Visibility(

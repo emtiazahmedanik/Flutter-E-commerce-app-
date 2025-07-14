@@ -9,10 +9,8 @@ import 'package:craft_bay/features/common/controller/category_list_controller.da
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/controller/popular_product_controller.dart';
 import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
+import 'package:craft_bay/features/product/controller/product_add_to_cart_controller.dart';
 import 'package:craft_bay/features/product/controller/product_detail_controller.dart';
-import 'package:craft_bay/features/product/controller/product_quantity_controller.dart';
-import 'package:craft_bay/features/product/controller/single_category_product_list_controller.dart';
-import 'package:craft_bay/features/product/ui/screen/single_category_product_list_screen.dart';
 import 'package:get/get.dart';
 
 class ControllerBinder extends Bindings {
@@ -28,9 +26,9 @@ class ControllerBinder extends Bindings {
     Get.put(LoginController());
     Get.put(PopularProductController());
     Get.put(ProductDetailController());
+    Get.put(ProductAddToCartController());
     Get.put(
       NetworkClient(
-        commonHeaders: _commonHeaders(),
         onUnAuthorize: _onUnAuthorize,
       ),
     );
@@ -41,12 +39,5 @@ class ControllerBinder extends Bindings {
     Get.to(() => LoginScreen());
   }
 
-  Map<String, String> _commonHeaders() {
-    return {
-      'content-type': 'application/json',
-      'token': Get
-          .find<AuthController>()
-          .accessToken ?? '',
-    };
-  }
+
 }
