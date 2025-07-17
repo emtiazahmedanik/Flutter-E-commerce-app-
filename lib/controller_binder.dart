@@ -4,6 +4,7 @@ import 'package:craft_bay/features/auth/ui/controller/sign_up_controller.dart';
 import 'package:craft_bay/features/auth/ui/controller/verificatin_timer_controller.dart';
 import 'package:craft_bay/features/auth/ui/controller/verification_controller.dart';
 import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
+import 'package:craft_bay/features/cart/ui/controller/cart_screen_controller.dart';
 import 'package:craft_bay/features/common/controller/auth_controller.dart';
 import 'package:craft_bay/features/common/controller/category_list_controller.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
@@ -27,6 +28,7 @@ class ControllerBinder extends Bindings {
     Get.put(PopularProductController());
     Get.put(ProductDetailController());
     Get.put(ProductAddToCartController());
+    Get.put(CartScreenController());
     Get.put(
       NetworkClient(
         onUnAuthorize: _onUnAuthorize,

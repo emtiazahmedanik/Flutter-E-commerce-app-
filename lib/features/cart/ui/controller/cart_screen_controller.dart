@@ -1,0 +1,41 @@
+import 'package:craft_bay/app/urls.dart';
+import 'package:craft_bay/core/services/network/network_client.dart';
+import 'package:craft_bay/features/cart/data/model/cart_model.dart';
+import 'package:get/get.dart';
+
+class CartScreenController extends GetxController {
+  bool _inProgress = false;
+
+  bool get getInProgress => _inProgress;
+
+  late String _msg;
+
+  String get getMessage => _msg;
+
+  final List<CartModel> _list = [];
+  List<CartModel> get getCartList => _list;
+
+  Future<bool> getCartData() async {
+    bool isSuccess = false;
+    _inProgress = true;
+    update();
+    final NetworkResponse response = await Get.find<NetworkClient>().getRequest(
+      url: Urls.cartListUrls,
+    );
+    if (response.isSuccess) {
+      isSuccess = true;
+      _msg = response.responseData!['msg'];
+      if (response.responseData!['data']['results'] != null) {
+        for (Map<String, dynamic> product
+            in response.responseData!['data']['results']) {
+          _list.add(CartModel.fromJson(product));
+        }
+      }
+    } else {
+      _msg = response.errorMessage!;
+    }
+    _inProgress = false;
+    update();
+    return isSuccess;
+  }
+}

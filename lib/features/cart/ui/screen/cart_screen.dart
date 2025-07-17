@@ -1,4 +1,5 @@
 import 'package:craft_bay/constants.dart';
+import 'package:craft_bay/features/cart/ui/controller/cart_screen_controller.dart';
 import 'package:craft_bay/features/cart/ui/widget/build_checkout_section.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/network/urls/asset_urls.dart';
@@ -14,6 +15,15 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+
+  final CartScreenController _cartScreenController = Get.find<CartScreenController>();
+
+  @override
+  void initState() {
+    _cartScreenController.getCartData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -46,40 +56,51 @@ class _CartScreenState extends State<CartScreen> {
   Widget buildProductList() {
     return Expanded(
       child: SizedBox(
-        child: ListView.builder(
-          itemCount: 7,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: double.maxFinite,
-                height: 90,
-                decoration: buildBoxDecoration(),
-                child: Padding(
+        child: GetBuilder<CartScreenController>(
+          builder: (_) {
+            if(_cartScreenController.getInProgress){
+              return Center(child: CircularProgressIndicator(),);
+            }
+            return ListView.builder(
+              itemCount: _cartScreenController.getCartList.length,
+              itemBuilder: (context, index) {
+                return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        height: 80,
-                        width: 70,
-                        child: Image.network(
-                          AssetUrls.shoeUrl,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      buildProductInfo(context),
-                      Column(
+                  child: Container(
+                    width: double.maxFinite,
+                    height: 90,
+                    decoration: buildBoxDecoration(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [buildDeleteButton(), buildIconButtonRow()],
+                        children: [
+                          SizedBox(
+                            height: 80,
+                            width: 70,
+                            child:_cartScreenController.getCartList[index].productsModel.photos.isNotEmpty ? Image.network(
+                              _cartScreenController.getCartList[index].productsModel.photos.first,
+                              fit: BoxFit.fill,
+                              errorBuilder: (context,_,__){
+                                return const Icon(Icons.error);
+                              },
+                            )
+                                : Icon(Icons.error)
+                          ),
+                          buildProductInfo(context,index),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [buildDeleteButton(), buildIconButtonRow(index)],
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             );
-          },
+          }
         ),
       ),
     );
@@ -95,21 +116,23 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget buildProductInfo(BuildContext context) {
+  Widget buildProductInfo(BuildContext context,int index) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'New Year Special Shoe',
+          _cartScreenController.getCartList[index].productsModel.title,
           style: Theme.of(context).textTheme.bodyMedium,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         Text(
-          'Color: Red, Size: X',
+          'Color: ${_cartScreenController.getCartList[index].color}, Size: ${_cartScreenController.getCartList[index].size}',
           style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 8),
-        Text('${Constants.takaSign}100', style: Theme.of(context).textTheme.bodyMedium),
+        Text('${Constants.takaSign}${_cartScreenController.getCartList[index].productsModel.current_price * _cartScreenController.getCartList[index].quantity}', style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }
@@ -135,13 +158,13 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget buildIconButtonRow() {
+  Widget buildIconButtonRow(int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         BuildIconButton(onTap: () {}, icon: Icons.horizontal_rule_rounded),
         const SizedBox(width: 2),
-        Text('01'),
+        Text('${_cartScreenController.getCartList[index].quantity}'),
         const SizedBox(width: 2),
         BuildIconButton(onTap: () {}, icon: Icons.add),
       ],
