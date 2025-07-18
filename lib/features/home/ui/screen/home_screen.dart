@@ -1,5 +1,7 @@
 import 'package:craft_bay/app/asset_paths.dart';
+import 'package:craft_bay/features/auth/ui/screens/profile_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
+import 'package:craft_bay/features/common/controller/auth_controller.dart';
 import 'package:craft_bay/features/common/controller/category_list_controller.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/controller/popular_product_controller.dart';
@@ -23,6 +25,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  Future<void> _onTapProfile() async{
+    if(await Get.find<AuthController>().isUserLoggedIn()){
+      Navigator.pushNamed(context, ProfileScreen.name);
+    }else{
+      Navigator.pushNamed(context, SignUpScreen.name);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         BuildNavActionButton(
             onTap: () {
-              Navigator.pushNamed(context, SignUpScreen.name);
+              _onTapProfile();
+
             },
             iconData: Icons.person_2_outlined
         ),

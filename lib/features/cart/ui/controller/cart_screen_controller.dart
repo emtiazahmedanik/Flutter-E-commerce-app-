@@ -48,4 +48,12 @@ class CartScreenController extends GetxController {
     }
     return msg;
   }
+
+  int get totalPrice{
+    int total = 0;
+    for(CartModel cartModel in _list){
+      total += (cartModel.productsModel.current_price * cartModel.quantity);
+    }
+    return total;
+  }
 }

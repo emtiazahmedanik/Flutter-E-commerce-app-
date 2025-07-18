@@ -1,5 +1,6 @@
 import 'package:craft_bay/core/services/network/network_client.dart';
 import 'package:craft_bay/features/auth/ui/controller/login_controller.dart';
+import 'package:craft_bay/features/auth/ui/controller/profile_screen_controller.dart';
 import 'package:craft_bay/features/auth/ui/controller/sign_up_controller.dart';
 import 'package:craft_bay/features/auth/ui/controller/verificatin_timer_controller.dart';
 import 'package:craft_bay/features/auth/ui/controller/verification_controller.dart';
@@ -37,6 +38,7 @@ class ControllerBinder extends Bindings {
     Get.put(WishListScreenController());
     Get.put(ReviewScreenController());
     Get.put(CreateReviewScreenController());
+    Get.put(ProfileScreenController());
     Get.put(
       NetworkClient(
         onUnAuthorize: _onUnAuthorize,
