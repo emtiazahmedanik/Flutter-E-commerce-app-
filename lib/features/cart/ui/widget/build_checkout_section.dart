@@ -1,5 +1,7 @@
 import 'package:craft_bay/constants.dart';
+import 'package:craft_bay/features/cart/ui/controller/cart_screen_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BuildCheckoutSection extends StatelessWidget {
   const BuildCheckoutSection({super.key});
@@ -31,11 +33,15 @@ class BuildCheckoutSection extends StatelessWidget {
                       context,
                     ).textTheme.bodyMedium!.copyWith(color: Colors.black54),
                   ),
-                  Text(
-                    '${Constants.takaSign}100000',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyLarge!.copyWith(color: Colors.teal),
+                  GetBuilder<CartScreenController>(
+                    builder: (controller) {
+                      return Text(
+                        '${Constants.takaSign}${controller.totalPrice}',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyLarge!.copyWith(color: Colors.teal),
+                      );
+                    }
                   ),
                 ],
               ),

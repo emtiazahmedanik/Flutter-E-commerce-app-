@@ -1,4 +1,5 @@
 import 'package:craft_bay/features/auth/ui/screens/login_screen.dart';
+import 'package:craft_bay/features/auth/ui/screens/profile_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/signup_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/splash_screen.dart';
 import 'package:craft_bay/features/auth/ui/screens/verification_screen.dart';
@@ -42,6 +43,8 @@ class AppRoutes{
     }else if(settings.name == SingleCategoryProductListScreen.name){
       final CategoryModel args = settings.arguments as CategoryModel;
       screenWidget = SingleCategoryProductListScreen(args: args,);
+    }else if(settings.name == ProfileScreen.name){
+      screenWidget = ProfileScreen();
     }
 
     return MaterialPageRoute(builder: (context) => screenWidget);

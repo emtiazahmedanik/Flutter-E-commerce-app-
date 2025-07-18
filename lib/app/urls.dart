@@ -25,6 +25,7 @@ class Urls {
   static String deleteCartItemUrl({required String id}) => '$_baseUrl/cart/$id';
   static String reviewUrl({required String id}) => '$_baseUrl/reviews?product=$id';
   static const String createView = '$_baseUrl/review';
+  static const String profileDetailUrl = '$_baseUrl/auth/profile';
 
 
 }
