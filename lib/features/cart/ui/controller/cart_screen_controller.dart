@@ -16,6 +16,7 @@ class CartScreenController extends GetxController {
   List<CartModel> get getCartList => _list;
 
   Future<bool> getCartData() async {
+    _list.clear();
     bool isSuccess = false;
     _inProgress = true;
     update();
@@ -37,5 +38,14 @@ class CartScreenController extends GetxController {
     _inProgress = false;
     update();
     return isSuccess;
+  }
+
+  Future<String> deleteCartItem({required String id}) async{
+    String msg = '';
+    final NetworkResponse response = await Get.find<NetworkClient>().deleteRequest(Urls.deleteCartItemUrl(id: id));
+    if(response.responseData != null){
+      msg = response.responseData!['msg'];
+    }
+    return msg;
   }
 }

@@ -46,9 +46,9 @@ class SingleCategoryProductListController extends GetxController{
         _lastPage = response.responseData!['data']['last_page'];
       }
       List<ProductModel> list = [];
-      for (Map<String, dynamic> categories
+      for (Map<String, dynamic> products
       in response.responseData!['data']['results']) {
-        list.add(ProductModel.fromJson(categories));
+        list.add(ProductModel.fromJson(products));
       }
       _productList.addAll(list);
       _message = response.responseData!['msg'];

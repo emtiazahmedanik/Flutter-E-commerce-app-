@@ -20,5 +20,11 @@ class Urls {
   static String productDetailsUrls({required String id}) => '$_baseUrl/products/id/$id';
   static const String addToCartUrls = '$_baseUrl/cart';
   static const String cartListUrls = '$_baseUrl/cart';
+  static const String addToWishListUrls = '$_baseUrl/wishlist';
+  static const String wishListUrls = '$_baseUrl/wishlist?count=30';
+  static String deleteCartItemUrl({required String id}) => '$_baseUrl/cart/$id';
+  static String reviewUrl({required String id}) => '$_baseUrl/reviews?product=$id';
+  static const String createView = '$_baseUrl/review';
+
 
 }

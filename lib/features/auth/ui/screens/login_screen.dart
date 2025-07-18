@@ -74,12 +74,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(onPressed: _onTapNext, child: Text('Login')),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SignUpScreen.name);
-                    },
-                    child: Text('Sign Up'),
+                  const SizedBox(height: 10),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, SignUpScreen.name);
+                      },
+                      child: Text("Don't have an account ? SignUp",style: TextStyle(color: Colors.teal),)
                   ),
                 ],
               ),

@@ -1,4 +1,5 @@
 import 'package:craft_bay/constants.dart';
+import 'package:craft_bay/features/auth/ui/widgets/show_snackbar.dart';
 import 'package:craft_bay/features/cart/ui/controller/cart_screen_controller.dart';
 import 'package:craft_bay/features/cart/ui/widget/build_checkout_section.dart';
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
@@ -15,8 +16,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
-  final CartScreenController _cartScreenController = Get.find<CartScreenController>();
+  final CartScreenController _cartScreenController =
+      Get.find<CartScreenController>();
 
   @override
   void initState() {
@@ -42,12 +43,7 @@ class _CartScreenState extends State<CartScreen> {
           title: Text('Cart'),
         ),
         body: SafeArea(
-          child: Column(
-              children: [
-                buildProductList(), 
-                BuildCheckoutSection()
-              ]
-          ),
+          child: Column(children: [buildProductList(), BuildCheckoutSection()]),
         ),
       ),
     );
@@ -58,8 +54,8 @@ class _CartScreenState extends State<CartScreen> {
       child: SizedBox(
         child: GetBuilder<CartScreenController>(
           builder: (_) {
-            if(_cartScreenController.getInProgress){
-              return Center(child: CircularProgressIndicator(),);
+            if (_cartScreenController.getInProgress) {
+              return Center(child: CircularProgressIndicator());
             }
             return ListView.builder(
               itemCount: _cartScreenController.getCartList.length,
@@ -78,20 +74,37 @@ class _CartScreenState extends State<CartScreen> {
                           SizedBox(
                             height: 80,
                             width: 70,
-                            child:_cartScreenController.getCartList[index].productsModel.photos.isNotEmpty ? Image.network(
-                              _cartScreenController.getCartList[index].productsModel.photos.first,
-                              fit: BoxFit.fill,
-                              errorBuilder: (context,_,__){
-                                return const Icon(Icons.error);
-                              },
-                            )
-                                : Icon(Icons.error)
+                            child:
+                                _cartScreenController
+                                        .getCartList[index]
+                                        .productsModel
+                                        .photos
+                                        .isNotEmpty
+                                    ? Image.network(
+                                      _cartScreenController
+                                          .getCartList[index]
+                                          .productsModel
+                                          .photos
+                                          .first,
+                                      fit: BoxFit.fill,
+                                      errorBuilder: (context, _, __) {
+                                        return const Icon(Icons.error);
+                                      },
+                                    )
+                                    : Icon(Icons.error),
                           ),
-                          buildProductInfo(context,index),
+                          buildProductInfo(context, index),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [buildDeleteButton(), buildIconButtonRow(index)],
+                            children: [
+                              buildDeleteButton(
+                                _cartScreenController
+                                    .getCartList[index]
+                                    .id
+                              ),
+                              buildIconButtonRow(index),
+                            ],
                           ),
                         ],
                       ),
@@ -100,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
                 );
               },
             );
-          }
+          },
         ),
       ),
     );
@@ -116,7 +129,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget buildProductInfo(BuildContext context,int index) {
+  Widget buildProductInfo(BuildContext context, int index) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,25 +140,32 @@ class _CartScreenState extends State<CartScreen> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        Text(
-          'Color: ${_cartScreenController.getCartList[index].color}, Size: ${_cartScreenController.getCartList[index].size}',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        _cartScreenController.getCartList[index].color == 'null' ||
+                _cartScreenController.getCartList[index].size == 'null'
+            ? Text(
+              'Color: ${_cartScreenController.getCartList[index].color}, Size: ${_cartScreenController.getCartList[index].size}',
+              style: Theme.of(context).textTheme.bodySmall,
+            )
+            : const SizedBox.shrink(),
         const SizedBox(height: 8),
-        Text('${Constants.takaSign}${_cartScreenController.getCartList[index].productsModel.current_price * _cartScreenController.getCartList[index].quantity}', style: Theme.of(context).textTheme.bodyMedium),
+        Text(
+          '${Constants.takaSign}${_cartScreenController.getCartList[index].productsModel.current_price * _cartScreenController.getCartList[index].quantity}',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ],
     );
   }
 
-  Widget buildDeleteButton() {
+  Widget buildDeleteButton(String cartId) {
     return Material(
       color: Colors.transparent,
       shape: const CircleBorder(),
       child: InkWell(
         customBorder: const CircleBorder(),
         splashColor: Colors.red,
-
-        onTap: () {},
+        onTap: () {
+          _onTapDeleteItem(cartId);
+        },
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: CircleAvatar(
@@ -170,5 +190,18 @@ class _CartScreenState extends State<CartScreen> {
       ],
     );
   }
-}
 
+  Future<void> _onTapDeleteItem(String cartId) async {
+    final String msg = await Get.find<CartScreenController>().deleteCartItem(
+      id: cartId,
+    );
+    Get.find<CartScreenController>().getCartData();
+    Get.snackbar(
+      '',
+      msg,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Colors.teal,
+      colorText: Colors.white,
+    );
+  }
+}

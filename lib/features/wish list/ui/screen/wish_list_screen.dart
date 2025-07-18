@@ -1,6 +1,7 @@
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/ui/widget/popular_item.dart';
 import 'package:craft_bay/features/product/ui/screen/product_detail_screen.dart';
+import 'package:craft_bay/features/wish%20list/controller/wishlist_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,8 +14,14 @@ class WishListScreen extends StatefulWidget {
 
 class _WishListScreenState extends State<WishListScreen> {
 
-  void _moveToProductDetailScreen(){
-    //Navigator.pushNamed(context, ProductDetailScreen.name);
+  void _moveToProductDetailScreen(String productId){
+    Navigator.pushNamed(context, ProductDetailScreen.name,arguments: productId);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Get.find<WishListScreenController>().getWishListProducts();
   }
 
   @override
@@ -35,22 +42,35 @@ class _WishListScreenState extends State<WishListScreen> {
           title: Text('Wish List'),
         ),
         body: SafeArea(
-          child: GridView.builder(
-            itemCount: 20,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              //childAspectRatio: 4/5
-            ),
-            itemBuilder: (context, index) {
-              return FittedBox(
-                  child: InkWell(
-                    onTap: (){
-                      _moveToProductDetailScreen();
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: GetBuilder<WishListScreenController>(
+              builder: (controller) {
+                if(controller.getProductWishList.isEmpty){
+                  return const SizedBox.shrink();
+                }
+                return Visibility(
+                  visible: controller.inProgress == false,
+                  replacement: Center(child: CircularProgressIndicator(),),
+                  child: GridView.builder(
+                    itemCount: controller.getProductWishList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                    ),
+                    itemBuilder: (context, index) {
+                      return FittedBox(
+                          child: InkWell(
+                            onTap: (){
+                              _moveToProductDetailScreen(controller.getProductWishList[index].id);
+                            },
+                              child: PopularItem(productModel: controller.getProductWishList[index],)
+                          )
+                      );
                     },
-                      // child: PopularItem()
-                  )
-              );
-            },
+                  ),
+                );
+              }
+            ),
           ),
         ),
       ),

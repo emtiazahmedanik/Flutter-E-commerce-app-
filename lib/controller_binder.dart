@@ -10,8 +10,12 @@ import 'package:craft_bay/features/common/controller/category_list_controller.da
 import 'package:craft_bay/features/common/controller/main_bottom_nav_controller.dart';
 import 'package:craft_bay/features/common/controller/popular_product_controller.dart';
 import 'package:craft_bay/features/home/ui/controller/home_slider_controller.dart';
+import 'package:craft_bay/features/product/controller/add_to_wishlist_controller.dart';
 import 'package:craft_bay/features/product/controller/product_add_to_cart_controller.dart';
 import 'package:craft_bay/features/product/controller/product_detail_controller.dart';
+import 'package:craft_bay/features/reviews/controller/create_review_screen_controller.dart';
+import 'package:craft_bay/features/reviews/controller/review_screen_controller.dart';
+import 'package:craft_bay/features/wish%20list/controller/wishlist_screen_controller.dart';
 import 'package:get/get.dart';
 
 class ControllerBinder extends Bindings {
@@ -29,6 +33,10 @@ class ControllerBinder extends Bindings {
     Get.put(ProductDetailController());
     Get.put(ProductAddToCartController());
     Get.put(CartScreenController());
+    Get.put(AddToWishListController());
+    Get.put(WishListScreenController());
+    Get.put(ReviewScreenController());
+    Get.put(CreateReviewScreenController());
     Get.put(
       NetworkClient(
         onUnAuthorize: _onUnAuthorize,

@@ -1,10 +1,17 @@
 import 'package:craft_bay/constants.dart';
+import 'package:craft_bay/features/product/controller/product_add_to_cart_controller.dart';
+import 'package:craft_bay/features/product/controller/product_detail_controller.dart';
 import 'package:craft_bay/features/product/controller/product_quantity_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BuildAddToCartSection extends StatelessWidget {
-  const BuildAddToCartSection({super.key, required this.onTap,required this.price});
+  const BuildAddToCartSection({
+    super.key,
+    required this.onTap,
+    required this.price,
+  });
+
   final VoidCallback onTap;
   final int price;
 
@@ -43,16 +50,23 @@ class BuildAddToCartSection extends StatelessWidget {
                           context,
                         ).textTheme.bodyLarge!.copyWith(color: Colors.teal),
                       );
-                    }
+                    },
                   ),
                 ],
               ),
               SizedBox(
                 width: 140,
                 height: 35,
-                child: ElevatedButton(
-                  onPressed: onTap,
-                  child: Text('Add To Cart'),
+                child: GetBuilder<ProductAddToCartController>(
+                  builder: (controller) {
+                    if (controller.getInProgress) {
+                      return Text('Loading...');
+                    }
+                    return ElevatedButton(
+                      onPressed: onTap,
+                      child: Text('Add To Cart'),
+                    );
+                  },
                 ),
               ),
             ],

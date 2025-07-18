@@ -83,32 +83,54 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         .photoUrls,
                               ),
                           BuildTitleSection(),
-                          BuildReviewsSection(),
+                          BuildReviewsSection(productId: widget.productId),
                           const SizedBox(height: 1),
-                          Text(
-                            'Color',
-                            style: Theme.of(context).textTheme.titleMedium!
-                                .copyWith(color: Colors.black54),
-                          ),
-                          ColorPicker(
-                            colors:
-                                _productDetailController
-                                    .productDetailModel
-                                    .colors,
-                            onSelected: (String value) {},
-                          ),
-                          Text(
-                            'Size',
-                            style: Theme.of(context).textTheme.titleMedium!
-                                .copyWith(color: Colors.black54),
-                          ),
-                          SizePicker(
-                            sizes:
-                                _productDetailController
-                                    .productDetailModel
-                                    .size,
-                            onSelected: (String value) {},
-                          ),
+                          _productDetailController
+                                  .productDetailModel
+                                  .colors
+                                  .isNotEmpty
+                              ? Column(
+                                children: [
+                                  Text(
+                                    'Color',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(color: Colors.black54),
+                                  ),
+                                  ColorPicker(
+                                    colors:
+                                        _productDetailController
+                                            .productDetailModel
+                                            .colors,
+                                    onSelected: (String value) {},
+                                  ),
+                                ],
+                              )
+                              : const SizedBox.shrink(),
+                          _productDetailController
+                                  .productDetailModel
+                                  .size
+                                  .isNotEmpty
+                              ? Column(
+                                children: [
+                                  Text(
+                                    'Size',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(color: Colors.black54),
+                                  ),
+                                  SizePicker(
+                                    sizes:
+                                        _productDetailController
+                                            .productDetailModel
+                                            .size,
+                                    onSelected: (String value) {},
+                                  ),
+                                ],
+                              )
+                              : const SizedBox.shrink(),
                           const SizedBox(height: 2.0),
                           Text(
                             'Description',
@@ -127,13 +149,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                 ),
-                GetBuilder<ProductDetailController>(
-                  builder: (controller) {
-                    return BuildAddToCartSection(
-                      onTap: _onTapAddToCart,
-                      price: controller.productDetailModel.currentPrice,
-                    );
-                  },
+                BuildAddToCartSection(
+                  onTap: _onTapAddToCart,
+                  price:
+                      _productDetailController.productDetailModel.currentPrice,
                 ),
               ],
             );
@@ -148,10 +167,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       debugPrint('logged in');
       final bool isSuccess = await Get.find<ProductAddToCartController>()
           .addToCartRequest(productId: widget.productId);
-      if(isSuccess){
-        showSnackBar(context: context, message: Get.find<ProductAddToCartController>().getMessage);
-      }else{
-        showSnackBar(context: context, message: Get.find<ProductAddToCartController>().getMessage,isError: true);
+      if (isSuccess) {
+        showSnackBar(
+          context: context,
+          message: Get.find<ProductAddToCartController>().getMessage,
+        );
+      } else {
+        showSnackBar(
+          context: context,
+          message: Get.find<ProductAddToCartController>().getMessage,
+          isError: true,
+        );
       }
     } else {
       Navigator.pushNamedAndRemoveUntil(

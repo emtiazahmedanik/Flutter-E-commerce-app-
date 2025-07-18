@@ -1,5 +1,7 @@
 
+import 'package:craft_bay/features/reviews/controller/review_screen_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BuildReviewDetailSection extends StatelessWidget {
   const BuildReviewDetailSection({super.key, required this.onTap});
@@ -22,11 +24,15 @@ class BuildReviewDetailSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Reviews(1000)',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium!.copyWith(color: Colors.black54),
+              GetBuilder<ReviewScreenController>(
+                builder: (controller) {
+                  return Text(
+                    'Reviews(${controller.reviewList.length})',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium!.copyWith(color: Colors.black54),
+                  );
+                }
               ),
               Material(
                 shape: const CircleBorder(),

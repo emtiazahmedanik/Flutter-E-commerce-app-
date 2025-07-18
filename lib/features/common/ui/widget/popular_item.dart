@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'package:craft_bay/constants.dart';
 import 'package:craft_bay/features/common/model/product_model.dart';
-import 'package:craft_bay/features/common/network/urls/asset_urls.dart';
 import 'package:craft_bay/features/common/ui/widget/build_icon_button.dart';
+import 'package:craft_bay/features/product/controller/add_to_wishlist_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PopularItem extends StatelessWidget {
   const PopularItem({super.key, required this.productModel});
@@ -11,6 +13,7 @@ class PopularItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double review = 3.5 + (Random().nextDouble() * (4.9 - 3.5));
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -39,15 +42,12 @@ class PopularItem extends StatelessWidget {
                 ),
                 child:
                     productModel.photoUrls.isEmpty
-                        ? Image.network(AssetUrls.shoeUrl, fit: BoxFit.fill)
+                        ? Icon(Icons.error)
                         : Image.network(
                           productModel.photoUrls.first,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                            return Image.network(
-                              AssetUrls.shoeUrl,
-                              fit: BoxFit.fill,
-                            );
+                            return Icon(Icons.error);
                           },
                         ),
               ),
@@ -75,15 +75,20 @@ class PopularItem extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodySmall!
                               .copyWith(fontWeight: FontWeight.w700),
                         ),
+
                         Text(
-                          '⭐4.8',
+                          '⭐${review.toStringAsFixed(1)}',
                           style: Theme.of(
                             context,
                           ).textTheme.bodySmall!.copyWith(color: Colors.black),
                         ),
-                        BuildIconButton(
-                          onTap: () {},
-                          icon: Icons.favorite_border,
+                        GetBuilder<AddToWishListController>(
+                          builder: (controller) {
+                            return BuildIconButton(
+                              onTap: _onTapWishlistIcon,
+                              icon: Icons.favorite_border,
+                            );
+                          }
                         ),
                       ],
                     ),
@@ -95,5 +100,26 @@ class PopularItem extends StatelessWidget {
         ),
       ),
     );
+  }
+  Future<void> _onTapWishlistIcon() async {
+    final bool isSuccess = await Get.find<AddToWishListController>()
+        .addToWishList(productId: productModel.id);
+    if (isSuccess) {
+      Get.snackbar(
+        '',
+        Get.find<AddToWishListController>().getMessage,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.teal,
+        colorText: Colors.white,
+      );
+    } else {
+      Get.snackbar(
+        '',
+        Get.find<AddToWishListController>().getMessage,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

@@ -34,9 +34,11 @@ class AppRoutes{
       final String productId = settings.arguments as String;
       screenWidget = ProductDetailScreen(productId: productId,);
     }else if(settings.name == ReviewsScreen.name){
-      screenWidget = ReviewsScreen();
+      final String productId = settings.arguments as String;
+      screenWidget = ReviewsScreen(productId: productId);
     }else if(settings.name == CreateReviewScreen.name){
-      screenWidget = CreateReviewScreen();
+      final String productId = settings.arguments as String;
+      screenWidget = CreateReviewScreen(productId: productId);
     }else if(settings.name == SingleCategoryProductListScreen.name){
       final CategoryModel args = settings.arguments as CategoryModel;
       screenWidget = SingleCategoryProductListScreen(args: args,);
